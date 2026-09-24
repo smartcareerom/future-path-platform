@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>نتائج مقياس الميول المهنية</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fb;
+    margin:0;
+    padding:30px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    color:#0b5ed7;
+    margin-bottom:10px;
+}
+
+.description{
+    text-align:center;
+    color:#666;
+    font-size:18px;
+    margin-bottom:15px;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.1);
+}
+
+.search-box{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:16px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+th{
+    background:#0b5ed7;
+    color:white;
+    padding:15px;
+    font-size:18px;
+}
+
+td{
+    padding:15px;
+    font-size:16px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    text-align:center;
+}
+
+tr:nth-child(even){
+    background:#f7f9fc;
+}
+
+tr:hover{
+    background:#eef5ff;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎯 نتائج مقياس الميول المهنية</h1>
+
+<p class="description">
+منصة رقمية لعرض نتائج مقياس الميول المهنية والبيئات المهنية الأكثر توافقًا مع ميول الطالبات.
+</p>
+
+<div class="card">
+
+<input
+type="text"
+id="searchInput"
+class="search-box"
+placeholder="🔍 ابحثي باسم الطالبة..."
+onkeyup="searchTable()">
+
+<table id="resultsTable">
+
+<thead>
+<tr>
+<th>اسم الطالبة</th>
+<th>الصف</th>
+<th>البيئات المهنية الأكثر توافقًا</th>
+</tr>
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+fetch("https://script.google.com/macros/s/AKfycbyrNXt9tC9LX5ab2odBE0f7U4Qzh5I6KoEQLcm_-AdFj5vUjstdQGszBj6qLJ8Xuh3c/exec")
+
+.then(response => response.json())
+
+.then(data => {
+
+const tableBody =
+document.querySelector("#resultsTable tbody");
+
+tableBody.innerHTML = "";
+
+for(let i = 1; i < data.length; i++){
+
+let row = data[i];
+
+let tr = document.createElement("tr");
+
+tr.innerHTML = `
+<td>${row[1] || ""}</td>
+<td>${row[2] || ""}</td>
+<td>${row[4] || ""}</td>
+`;
+
+tableBody.appendChild(tr);
+
+}
+
+})
+
+.catch(error => {
+console.error(error);
+});
+
+function searchTable(){
+
+let input =
+document.getElementById("searchInput");
+
+let filter =
+input.value.toUpperCase();
+
+let table =
+document.getElementById("resultsTable");
+
+let tr =
+table.getElementsByTagName("tr");
+
+for(let i = 1; i < tr.length; i++){
+
+let td =
+tr[i].getElementsByTagName("td")[0];
+
+if(td){
+
+let txtValue =
+td.textContent || td.innerText;
+
+tr[i].style.display =
+txtValue.toUpperCase().indexOf(filter) > -1
+? ""
+: "none";
+
+}
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>
