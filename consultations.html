@@ -57,50 +57,127 @@ summary{
 
 <h1>💼 الاستشارات المهنية</h1>
 
-<div class="card">
+<div id="questionsContainer">
 
-<h2>❓ الأسئلة الأكثر تكرارًا</h2>
-
-<details>
-<summary>كيف أختار التخصص الجامعي المناسب؟</summary>
-<p>
-اختيار التخصص يعتمد على الميول المهنية والقدرات الأكاديمية وطموحات الطالبة وفرص العمل المستقبلية.
-</p>
-</details>
-
-<details>
-<summary>ما الفرق بين الرياضيات الأساسية والرياضيات المتقدمة؟</summary>
-<p>
-الرياضيات المتقدمة مطلوبة في عدد أكبر من التخصصات العلمية والهندسية، بينما الأساسية تناسب بعض المسارات الأخرى.
-</p>
-</details>
-
-<details>
-<summary>هل تؤثر المواد التي أختارها على التخصص الجامعي؟</summary>
-<p>
-نعم، بعض التخصصات الجامعية تشترط دراسة مواد معينة مثل الأحياء أو الفيزياء أو الكيمياء.
-</p>
-</details>
-
-<details>
-<summary>كيف أعرف ميولي المهنية؟</summary>
-<p>
-يمكنك الاستفادة من مقياس الميول المهنية وبرامج التوجيه المهني والاستشارات الفردية.
-</p>
-</details>
-
-<details>
-<summary>ما أفضل طريقة للتخطيط للمستقبل المهني؟</summary>
-<p>
-حددي ميولك وقدراتك، ثم استكشفي التخصصات والمهن المرتبطة بها وضعي خطة أكاديمية واضحة.
-</p>
-</details>
-
-</div>
+    <p style="text-align:center;">
+    جاري تحميل الإجابات...
+    </p>
+    
+    </div>
 
 <div class="back">
 <a href="index.html">🏠 العودة إلى الصفحة الرئيسية</a>
+</div><!-- قسم الأسئلة والإجابات -->
+
+<div style="
+max-width:900px;
+margin:30px auto;
+padding:25px;
+background:white;
+border-radius:20px;
+box-shadow:0 6px 18px rgba(0,0,0,0.10);
+">
+
+<h2 style="
+text-align:center;
+color:#0b5ed7;
+margin-bottom:10px;
+">
+💬 أسئلتكن وإجابات التوجيه المهني
+</h2>
+
+<p style="
+text-align:center;
+color:#666;
+margin-bottom:25px;
+">
+تظهر هنا الإجابات المنشورة على أسئلة الطالبات.
+</p>
+
+<div id="questionsContainer">
+
+<p style="text-align:center;">
+جاري تحميل الإجابات...
+</p>
+
 </div>
+
+</div>
+
+<script>
+
+const questionsApi =
+"https://script.google.com/macros/s/AKfycbzN466RELsbUTGL6PvNYNRL2HCY6sXqm9eoSY2xpHrsQqoOTc70pGlaTObSLaHCUgOXdA/exec";
+
+fetch(questionsApi)
+
+.then(response => {
+    if (!response.ok) {
+        throw new Error("تعذر تحميل البيانات");
+    }
+
+    return response.json();
+})
+.then(data => {
+
+const container = document.getElementById("questionsContainer");
+
+container.innerHTML = "";
+
+data.slice(1).forEach(row => {
+
+    const question = row[1] || "";
+    const answer = row[2] || "";
+    const status = row[3] || "";
+
+    if (
+        status.trim() === "منشور" &&
+        question.trim() !== "" &&
+        answer.trim() !== ""
+    ) {
+
+        const item = document.createElement("details");
+
+        item.innerHTML = `
+            <summary>❓ ${question}</summary>
+            <p>💡 ${answer}</p>
+        `;
+
+        container.appendChild(item);
+    }
+
+});
+
+    if (container.children.length === 0) {
+
+        container.innerHTML = `
+            <p style="
+                text-align:center;
+                color:#777;
+            ">
+                لا توجد إجابات منشورة حاليًا.
+            </p>
+        `;
+    }
+
+})
+
+.catch(error => {
+
+    console.error(error);
+
+    document.getElementById("questionsContainer").innerHTML = `
+        <p style="
+            text-align:center;
+            color:#c62828;
+        ">
+            تعذر تحميل الإجابات حاليًا.
+        </p>
+    `;
+
+});
+
+</script>
 
 </body>
 </html>
